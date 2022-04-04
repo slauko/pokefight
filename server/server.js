@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const config = require('./config/config');
 const port = process.env.PORT || 3001;
 
 // MongoDB connection
-mongoose.connect(config.database, { useNewUrlParser: true });
+//mongoose.connect(config.database, { useNewUrlParser: true });
 
 // Middleware
 app.use(cors());
