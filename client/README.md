@@ -1,1 +1,1 @@
-#client for the pokefight webapp
+# client for the pokefight webapp
