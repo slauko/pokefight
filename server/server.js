@@ -12,15 +12,14 @@ mongoose.connect(config.database, { useNewUrlParser: true });
 app.use(cors());
 app.use(express.json());
 
+const pokemon = require('./data/pokedex.json');
 // GET pokemon list
 app.get('/pokemon', (req, res) => {
-	const pokemon = require('./data/pokedex.json');
 	res.send(pokemon);
 });
 
 // GET pokemon by id
 app.get('/pokemon/:id', (req, res) => {
-	const pokemon = require('./data/pokedex.json');
 	const id = req.params.id;
 	const pokemonById = pokemon.find((pokemon) => pokemon.id === id);
 	res.send(pokemonById);
@@ -28,7 +27,6 @@ app.get('/pokemon/:id', (req, res) => {
 
 // GET pokemon by id and info
 app.get('/pokemon/:id/:info', (req, res) => {
-	const pokemon = require('./data/pokedex.json');
 	const id = req.params.id;
 	const info = req.params.info;
 	const pokemonById = pokemon.find((pokemon) => pokemon.id === id);
