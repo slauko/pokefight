@@ -12,7 +12,7 @@ mongoose.connect(config.database, { useNewUrlParser: true });
 app.use(cors());
 app.use(express.json());
 
-const pokemon = require('./data/pokedex.json');
+const pokemon = require('./data/pokedex.json'); // TODO: Change to an PokeAPI when ready e.g. https://pokeapi.co/docs/v2
 // GET pokemon list
 app.get('/pokemon', (req, res) => {
 	res.send(pokemon);
