@@ -15,6 +15,7 @@ mongoose.connect(database, { useNewUrlParser: true });
 const users = mongoose.model(
 	'users',
 	mongoose.Schema({
+		_id: Number,
 		username: String,
 		pokemons: Array,
 	})
@@ -71,12 +72,18 @@ app.get('/pokemon/:id', (req, res) => {
 
 // GET pokemon by id and info
 app.get('/pokemon/:id/:info', (req, res) => {
-	const id = req.params.id;
-	const info = req.params.info;
-	const pokemonById = pokemon.find((pokemon) => pokemon.id === id);
-	const pokemonInfo = pokemonById[info];
-	res.send(pokemonInfo);
+	pokemons
+		.find({ id: req.params.id })
+		.then((pokemon) => {
+			res.send(pokemon[0][req.params.info]);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
 });
+
+// FIGHT pokemon user1 vs pokemon user2 by id
+app.get('/fight/:id1/:id2', (req, res) => {});
 
 // Handle 404
 app.use((req, res) => {
