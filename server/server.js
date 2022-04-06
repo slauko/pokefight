@@ -1,28 +1,72 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-//const mongoose = require('mongoose');
-const config = require('./config/config');
-const port = process.env.PORT || 3001;
+const mongoose = require('mongoose');
+
+// Load env variables
+require('dotenv').config();
+
+// Process env loading
+const port = process.env.PORT;
+const database = process.env.DATABASE_URI;
 
 // MongoDB connection
-//mongoose.connect(config.database, { useNewUrlParser: true });
+mongoose.connect(database, { useNewUrlParser: true });
+const users = mongoose.model(
+	'users',
+	mongoose.Schema({
+		username: String,
+		pokemons: Array,
+	})
+);
+const pokemons = mongoose.model(
+	'pokemons',
+	mongoose.Schema({
+		id: Number,
+		name: Object,
+		type: Array,
+		base: Object,
+	})
+);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-const pokemon = require('./data/pokedex.json'); // TODO: Change to an PokeAPI when ready e.g. https://pokeapi.co/docs/v2
+// GET all users
+app.get('/users', (req, res) => {
+	users
+		.find({})
+		.then((users) => {
+			res.send(users);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
+
 // GET pokemon list
 app.get('/pokemon', (req, res) => {
-	res.send(pokemon);
+	pokemons
+		.find({})
+		.then((pokemons) => {
+			res.send(pokemons);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
 });
 
 // GET pokemon by id
 app.get('/pokemon/:id', (req, res) => {
-	const id = req.params.id;
-	const pokemonById = pokemon.find((pokemon) => pokemon.id === id);
-	res.send(pokemonById);
+	pokemons
+		.find({ id: req.params.id })
+		.then((pokemon) => {
+			res.send(pokemon);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
 });
 
 // GET pokemon by id and info
