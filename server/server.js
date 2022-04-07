@@ -27,6 +27,7 @@ const users = mongoose.model(
 	mongoose.Schema({
 		_id: mongoose.Schema.Types.ObjectId,
 		username: String,
+		password: String,
 	})
 );
 const pokemons = mongoose.model(
@@ -259,36 +260,27 @@ app.post('/pokemon', (req, res) => {
 });
 
 // CREATE new user
-app.post('/user', (req, res) => {
+app.post('/user/register', (req, res) => {
 	const { username, password } = req.body;
 	if (!username || !password) {
 		res.status(400).send('Missing username or password');
 	} else {
-		users
-			.find({ username: username })
-			.then((user) => {
-				if (user.length > 0) {
-					res.status(400).send('Username already exists');
-				} else {
-					bcrypt.hash(password, 10, (err, hash) => {
-						if (err) {
-							res.status(500).send(err);
-						} else {
-							users
-								.insertOne({ username: username, password: hash })
-								.then((user) => {
-									res.send(user);
-								})
-								.catch((err) => {
-									res.status(500).send(err);
-								});
-						}
+		users.find({ username }).then((user) => {
+			if (user.length > 0) {
+				res.status(400).send('Username already exists');
+			} else {
+				const hash = bcrypt.hashSync(password, 10);
+				users
+					.create({ _id: new mongoose.Types.ObjectId(), username, password: hash })
+					.then((result) => {
+						res.send(result);
+					})
+					.catch((err) => {
+						console.log(err);
+						res.status(500).send(err);
 					});
-				}
-			})
-			.catch((err) => {
-				res.status(500).send(err);
-			});
+			}
+		});
 	}
 });
 
