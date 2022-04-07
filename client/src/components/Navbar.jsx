@@ -6,10 +6,10 @@ function Navbar() {
 	return (
 		<div className='Navbar row'>
 			<div className='col-md-1'></div>
-			<div className='Logo col-md-2'>
+			<div className='Logo col-md-2 col-sm-4 col-xs'>
 				<img src={logoIcon} alt='' />
 			</div>
-			<div className='Links col-md'>
+			<div className='Links col-md col-sm-8 col-xs'>
 				<Link to='/'>Pokedex</Link>
 				<Link to='/user'> User </Link>
 				<Link to='/login'> Login </Link>

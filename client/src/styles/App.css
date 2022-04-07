@@ -4,12 +4,19 @@
 }
 
 html,
-body {
+body,
+#root {
 	margin: auto;
+	min-height: 100vh;
 }
-
 .container {
+	min-width: 100%;
+	min-height: 100vh;
 	border-left: solid black 2px;
 	border-right: solid black 2px;
 	background-color: rgb(225, 225, 225);
+}
+
+.Content {
+	min-height: 86.5vh;
 }

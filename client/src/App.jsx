@@ -12,13 +12,15 @@ function App() {
 	return (
 		<div className='container'>
 			<Navbar />
-			<Routes>
-				<Route path='/' element={<Home />} />
-				<Route path='/user' element={<User />} />
-				<Route path='/login' element={<Login />} />
-				<Route path='/pokemon/:id' element={<></>} />
-				<Route path='/pokemon/:id/:info' element={<></>} />
-			</Routes>
+			<div className='Content row'>
+				<Routes>
+					<Route path='/' element={<Home />} />
+					<Route path='/user' element={<User />} />
+					<Route path='/login' element={<Login />} />
+					<Route path='/pokemon/:id' element={<></>} />
+					<Route path='/pokemon/:id/:info' element={<></>} />
+				</Routes>
+			</div>
 			<Footer />
 			{/* <div className='container'>
 				<div className='left-content'>
