@@ -11,6 +11,8 @@ COPY .env ./
 # copy data to WORKDIR
 COPY data/ ./data/
 
+# set node_env to production
+ENV NODE_ENV="production"
 RUN npm ci --only=production
 
 EXPOSE 3001
