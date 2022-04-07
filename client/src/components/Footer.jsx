@@ -7,8 +7,9 @@ export default function Footer() {
 		<div className='Footer row'>
 			<div className='col-md-2'></div>
 			<div className='Items col-md'>
-				<div className='Copyright col-md'>
-					<p>&copy; 2022 WBS-WDG003 Group 4</p>
+				<div className='Copyright col-md-3'>
+					<p>&copy; 2022 Group 4</p>
+					<p>WBS-WDG003</p>
 				</div>
 				<div className='Socials col-md'>
 					<IconContext.Provider
