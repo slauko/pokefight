@@ -10,18 +10,18 @@ export default function Login() {
   const handleShow = () => setShow(true);
   return (
     <div className="login-form">
-      <h4 style={{ marginTop: "2rem" }}> Login to play</h4>
+      <h4 style={{ marginTop: "1rem" }}> Login to play</h4>
       <Form className="d-flex flex-grow-2 flex-wrap">
         <Form>
           <Form.Group
             className="mb-3"
             controlId="formBasicEmail"
-            style={{ marginTop: "2rem" }}
+            style={{ marginTop: "1rem" }}
           >
             <Form.Control
               type="email"
               placeholder="Enter your E-Mail"
-              style={{ padding: "10px 90px 10px 0" }}
+              style={{ padding: "10px 90px 10px 5px" }}
             />
             <Form.Text className="text-muted"></Form.Text>
           </Form.Group>
@@ -30,7 +30,7 @@ export default function Login() {
             <Form.Control
               type="password"
               placeholder="Password"
-              style={{ padding: "10px 90px 10px 0" }}
+              style={{ padding: "10px 90px 10px 5px" }}
             />
           </Form.Group>
           <Button
