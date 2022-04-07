@@ -150,6 +150,10 @@ const calcDamage = (pokemon1, pokemon2) => {
 	return (normalDamage + specialDamage) * speedMod;
 };
 
+const getCritChance = () => {
+	return Math.random() * 0.5 + 0.5;
+};
+
 // FIGHT between two pokemons
 app.get('/fight/:id1/:id2', (req, res) => {
 	pokemons
@@ -165,8 +169,14 @@ app.get('/fight/:id1/:id2', (req, res) => {
 					} else {
 						getPokemonWithStats(pokemon1[0]).then((pokemon1WithStats) => {
 							getPokemonWithStats(pokemon2[0]).then((pokemon2WithStats) => {
-								let damage1 = Math.floor(calcDamage(pokemon1WithStats, pokemon2WithStats));
-								let damage2 = Math.floor(calcDamage(pokemon2WithStats, pokemon1WithStats));
+								let critChance1 = getCritChance();
+								let critChance2 = getCritChance();
+								let damage1 = Math.floor(
+									calcDamage(pokemon1WithStats, pokemon2WithStats) * critChance1
+								);
+								let damage2 = Math.floor(
+									calcDamage(pokemon2WithStats, pokemon1WithStats) * critChance2
+								);
 
 								const poke2HPAfterAttack = Math.max(0, pokemon2[0].hp - damage1);
 								//update pokemon2 hp
@@ -183,12 +193,16 @@ app.get('/fight/:id1/:id2', (req, res) => {
 														res.send({
 															damage1: damage1,
 															damage2: damage2,
+															crit1: critChance1,
+															crit2: critChance2,
 															winner: 'Pokemon 2',
 														});
 													} else {
 														res.send({
 															damage1: damage1,
 															damage2: damage2,
+															crit1: critChance1,
+															crit2: critChance2,
 														});
 													}
 												});
@@ -196,6 +210,8 @@ app.get('/fight/:id1/:id2', (req, res) => {
 											res.send({
 												damage1: damage1,
 												damage2: 0,
+												crit1: critChance1,
+												crit2: critChance2,
 												winner: 'Pokemon 1',
 											});
 										}
