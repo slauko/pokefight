@@ -1,0 +1,30 @@
+.abilities {
+  width: 30%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.image {
+  height: 150px;
+  width: 150px;
+}
+.abilities,
+.group {
+  background: color #b74555;
+  color: white;
+  padding: 1.5rem;
+  font-size: 12px;
+  border-radius: 8px;
+}
+.base-stats {
+  margin-top: 1rem;
+}
+.btn-group {
+  background-color: blue;
+  display: flex;
+  flex-direction: row;
+}
+h1 {
+  color: blue;
+}
