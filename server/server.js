@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
 // Load env variables
@@ -44,17 +45,19 @@ const pokemons = mongoose.model(
 app.use(cors());
 app.use(express.json());
 
-// GET all users
-app.get('/users', (req, res) => {
-	users
-		.find({})
-		.then((users) => {
-			res.send(users);
-		})
-		.catch((err) => {
-			res.status(500).send(err);
-		});
-});
+// GET all users if not production
+if (process.env.NODE_ENV !== 'production') {
+	app.get('/users', (req, res) => {
+		users
+			.find({})
+			.then((users) => {
+				res.send(users);
+			})
+			.catch((err) => {
+				res.status(500).send(err);
+			});
+	});
+}
 
 app.get('/users/:id/pokemons', (req, res) => {
 	pokemons
@@ -208,6 +211,100 @@ app.get('/fight/:id1/:id2', (req, res) => {
 		.catch((err) => {
 			res.status(500).send(err);
 		});
+});
+
+const getBasePokemon = async (poke_id) => {
+	const pokemon = await pokedex.find({ id: poke_id });
+	const basePokemon = {
+		poke_id: pokemon[0].id,
+		level: 1,
+		hp: pokemon[0].base.HP,
+	};
+	return basePokemon;
+};
+// CREATE a new pokemon for user
+app.post('/pokemon', (req, res) => {
+	const { userId, pokeId, pokeName } = req.body;
+	getBasePokemon(pokeId).then((basePokemon) => {
+		const newPokemon = {
+			user_id: userId,
+			...basePokemon,
+			name: pokeName,
+		};
+		pokemons
+			.insertOne(newPokemon)
+			.then((result) => {
+				res.send(result.ops[0]);
+			})
+			.catch((err) => {
+				res.status(500).send(err);
+			});
+	});
+});
+
+// CREATE new user
+app.post('/user', (req, res) => {
+	const { username, password } = req.body;
+	if (!username || !password) {
+		res.status(400).send('Missing username or password');
+	} else {
+		users
+			.find({ username: username })
+			.then((user) => {
+				if (user.length > 0) {
+					res.status(400).send('Username already exists');
+				} else {
+					bcrypt.hash(password, 10, (err, hash) => {
+						if (err) {
+							res.status(500).send(err);
+						} else {
+							users
+								.insertOne({ username: username, password: hash })
+								.then((user) => {
+									res.send(user);
+								})
+								.catch((err) => {
+									res.status(500).send(err);
+								});
+						}
+					});
+				}
+			})
+			.catch((err) => {
+				res.status(500).send(err);
+			});
+	}
+});
+
+// LOGIN user
+app.post('/user/login', (req, res) => {
+	const { username, password } = req.body;
+	if (!username || !password) {
+		res.status(400).send('Missing username or password');
+	} else {
+		users
+			.find({ username: username })
+			.then((user) => {
+				if (user.length > 0) {
+					bcrypt.compare(password, user[0].password, (err, result) => {
+						if (err) {
+							res.status(500).send(err);
+						} else {
+							if (result) {
+								res.send(user);
+							} else {
+								res.status(400).send('Wrong password');
+							}
+						}
+					});
+				} else {
+					res.status(400).send('Username does not exist');
+				}
+			})
+			.catch((err) => {
+				res.status(500).send(err);
+			});
+	}
 });
 
 // Handle 404
