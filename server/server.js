@@ -175,15 +175,24 @@ app.get('/fight/:id1/:id2', (req, res) => {
 											pokemons
 												.updateOne({ _id: req.params.id1 }, { $set: { hp: poke1HPAfterAttack } })
 												.then(() => {
-													res.send({
-														damage1: damage1,
-														damage2: damage2,
-													});
+													if (poke1HPAfterAttack == 0) {
+														res.send({
+															damage1: damage1,
+															damage2: damage2,
+															winner: 'Pokemon 2',
+														});
+													} else {
+														res.send({
+															damage1: damage1,
+															damage2: damage2,
+														});
+													}
 												});
 										} else {
 											res.send({
 												damage1: damage1,
 												damage2: 0,
+												winner: 'Pokemon 1',
 											});
 										}
 									});
