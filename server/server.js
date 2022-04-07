@@ -140,10 +140,11 @@ const calcDamage = (pokemon1, pokemon2) => {
 	const rawSpecialAttack = pokemon1.stats.specialAttack;
 	const specialAttackReductionMod = 1000 / (1000 + pokemon2.stats.specialDefense);
 	const effectiveness = getPokemonEffectiveness(pokemon1, pokemon2);
+	const speedMod = pokemon1.stats.speed / pokemon2.stats.speed;
 
 	const normalDamage = rawNormalDamage * effectiveness * normalDamageReductionMod;
 	const specialDamage = rawSpecialAttack * effectiveness * specialAttackReductionMod;
-	return normalDamage + specialDamage;
+	return (normalDamage + specialDamage) * speedMod;
 };
 
 // FIGHT between two pokemons
