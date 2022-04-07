@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 import logoIcon from '../pictures/PokeFight.png';
 
-function Navbar() {
+function Navbar({ user }) {
 	return (
 		<div className='Navbar row'>
 			<div className='col-md-1'></div>
@@ -12,7 +12,7 @@ function Navbar() {
 			<div className='Links col-md col-sm-8 col-xs'>
 				<Link to='/'>Pokedex</Link>
 				<Link to='/user'> User </Link>
-				<Link to='/login'> Login </Link>
+				{user ? <Link to='/profile'> Profile </Link> : <Link to='/login'> Login </Link>}
 			</div>
 		</div>
 	);
