@@ -1,5 +1,9 @@
 .Footer {
+	border-top: solid black 2px;
+	border-bottom: solid black 2px;
 	background-color: grey;
+	position: sticky;
+	bottom: 0;
 }
 
 .Items {

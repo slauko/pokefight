@@ -9,5 +9,6 @@ body {
 }
 
 .container {
-	border: solid black 2px;
+	border-left: solid black 2px;
+	border-right: solid black 2px;
 }
