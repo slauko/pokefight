@@ -11,4 +11,5 @@ body {
 .container {
 	border-left: solid black 2px;
 	border-right: solid black 2px;
+	background-color: rgb(225, 225, 225);
 }

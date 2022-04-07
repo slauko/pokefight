@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ReactCardFlip from 'react-card-flip';
+
 import '../styles/Card.css';
 
 const getTypeColor = (type) => {
@@ -45,28 +47,63 @@ const getTypeColor = (type) => {
 };
 
 export default function Card({ pokemon }) {
+	const [isFlipped, setIsFlipped] = useState(false);
 	return (
-		<div className='Pokemon'>
-			<div className='row' id='Name'>
-				<p>{pokemon.id + '. ' + pokemon.name.english}</p>
+		<ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
+			<div
+				className='Pokemon'
+				onClick={() => {
+					setIsFlipped(!isFlipped);
+				}}
+			>
+				<div className='row' id='Name'>
+					<p>{pokemon.id + '. ' + pokemon.name.english}</p>
+				</div>
+				<div className='row' id='Image'>
+					<img
+						src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`}
+						alt={`Pokemon${pokemon.id}`}
+					/>
+				</div>
+				<div className='row' id='Types'>
+					{pokemon.type.map((type) => {
+						const color = getTypeColor(type.toLowerCase());
+						return (
+							<div className='col-md' id='Type' style={{ backgroundColor: `${color}` }}>
+								<p>{type}</p>
+							</div>
+						);
+					})}
+				</div>
 			</div>
-			<div className='row' id='Image'>
-				<img
-					src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`}
-					alt={`Pokemon${pokemon.id}`}
-				/>
+			<div
+				className='Pokemon'
+				onClick={() => {
+					setIsFlipped(!isFlipped);
+				}}
+			>
+				<div className='row' id='BackName'>
+					<div className='col-md'>
+						<p>{pokemon.name.english}</p>
+					</div>
+					<div className='col-md' id='Image'>
+						<img
+							src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`}
+							alt={`Pokemon${pokemon.id}`}
+						/>
+					</div>
+				</div>
+				<div className='row' id='BackStats'>
+					<p>HP: {pokemon.base.HP}</p>
+					<p>Attack: {pokemon.base.Attack}</p>
+					<p>Defense: {pokemon.base.Defense}</p>
+					<p>Sp. Attack: {pokemon.base.Sp[' Attack']}</p>
+					<p>Sp. Defense: {pokemon.base.Sp[' Defense']}</p>
+				</div>
+				<div className='row' id='Add'>
+					<button>Add to your Pokemons</button>
+				</div>
 			</div>
-			<div className='row' id='Types'>
-				{pokemon.type.map((type) => {
-					const color = getTypeColor(type.toLowerCase());
-					console.log(color);
-					return (
-						<div className='col-md' id='Type' style={{ backgroundColor: `${color}` }}>
-							<p>{type}</p>
-						</div>
-					);
-				})}{' '}
-			</div>
-		</div>
+		</ReactCardFlip>
 	);
 }

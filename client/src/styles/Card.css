@@ -16,6 +16,22 @@
 	font-size: 1.5em;
 	font-weight: bold;
 }
+
+.Pokemon #BackName {
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+}
+.Pokemon #BackName > * p {
+	margin: 0;
+}
+.Pokemon #BackName #Image > img {
+	width: 50%;
+}
+
+.Pokemon #BackStats {
+}
+
 .Pokemon #Name > p {
 	margin: 0;
 }

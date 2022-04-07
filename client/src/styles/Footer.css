@@ -4,6 +4,7 @@
 	background-color: grey;
 	position: sticky;
 	bottom: 0;
+	z-index: 1;
 }
 
 .Items {
