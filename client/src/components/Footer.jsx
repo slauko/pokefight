@@ -5,16 +5,19 @@ import { IconContext } from 'react-icons/lib';
 export default function Footer() {
 	return (
 		<div className='Footer row'>
-			<div className='col-md-2'></div>
-			<div className='Items col-md'>
-				<div className='Copyright col-md-3'>
-					<p>&copy; 2022 Group 4</p>
-					<p>WBS-WDG003</p>
+			<div className='col-md-9'>
+				<div className='Copyright row'>
+					<p>Created 2022 by WBS-WDG003 Group 4</p>
 				</div>
+				<div className='Copyright Trademark row'>
+					<p>Pokémon and Pokémon character names are trademarks of Nintendo.</p>
+				</div>
+			</div>
+			<div className='Items col-md-2 col-sm-12'>
 				<div className='Socials col-md'>
 					<IconContext.Provider
 						value={{
-							size: '30px',
+							size: '20px',
 							style: {
 								borderRadius: '50%',
 								boxShadow:

@@ -1,86 +1,74 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
-	const [show, setShow] = useState(false);
+import axios from 'axios';
 
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+const LOGIN_URL = 'http://localhost:3001/user/login'; //'http://173.212.218.93:49171/user/login';
+const REGISTER_URL = 'http://localhost:3001/user/register';
+const Login = ({ setUser }) => {
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const navigate = useNavigate();
+
+	const handleLoginClick = (e) => {
+		e.preventDefault();
+		const username = e.target.username.value;
+		const password = e.target.password.value;
+		axios
+			.post(LOGIN_URL, { username, password })
+			.then((res) => {
+				setUser(res.data[0]);
+				setError('Logged in successfully');
+				setTimeout(() => {
+					navigate('/profile');
+				}, 500);
+			})
+			.catch((err) => {
+				setError(err.response.data);
+			});
+	};
+	const handleRegisterClick = (e) => {
+		e.preventDefault();
+		const username = e.target.username.value;
+		const password = e.target.password.value;
+		axios
+			.post(REGISTER_URL, { username, password })
+			.then((res) => {
+				setUser(res.data);
+				setError('Registered successfully');
+				setTimeout(() => {
+					navigate('/profile');
+				}, 500);
+			})
+			.catch((err) => {
+				setError(err.response.data);
+			});
+	};
+
 	return (
-		<div className='login-form'>
-			<h4 style={{ marginTop: '1rem' }}> Login to play</h4>
-			<Form className='d-flex flex-grow-2 flex-wrap'>
-				<Form>
-					<Form.Group className='mb-3' controlId='formBasicEmail' style={{ marginTop: '1rem' }}>
-						<Form.Control
-							type='email'
-							placeholder='Enter your Username'
-							style={{ padding: '10px 90px 10px 5px' }}
-						/>
-						<Form.Text className='text-muted'></Form.Text>
-					</Form.Group>
-
-					<Form.Group className='mb-3' controlId='formBasicPassword'>
-						<Form.Control
-							type='password'
-							placeholder='Password'
-							style={{ padding: '10px 90px 10px 5px' }}
-						/>
-					</Form.Group>
-					<Button
-						variant='success my-2 align-self-center'
-						style={{
-							backgroundColor: '#e7bd40',
-							color: 'white',
-							borderColor: 'black',
-							fontSize: '17px',
-							padding: '10px 50px',
-						}}
-					>
-						Login
-					</Button>
-					<div>
-						Not a member?{' '}
-						<p
-							onClick={handleShow}
-							style={{
-								cursor: 'pointer',
-								fontWeight: 'bold',
-								fontSize: '17px',
-							}}
-						>
-							Sign Up
-						</p>
-					</div>
-				</Form>
-			</Form>
-
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Sign up to play</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Form>
-						<Form.Group className='mb-3' controlId='formBasicuserName'>
-							<Form.Label>Username</Form.Label>
-							<Form.Control type='username' placeholder='Enter your Username' />
-							<Form.Text className='text-muted'></Form.Text>
-						</Form.Group>
-
-						<Form.Group className='mb-3' controlId='formBasicPassword'>
-							<Form.Label>Password</Form.Label>
-							<Form.Control type='password' placeholder='Enter a password' />
-						</Form.Group>
-					</Form>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant='primary' type='submit' onClick={handleClose}>
-						Sign Up
-					</Button>
-				</Modal.Footer>
-			</Modal>
+		<div>
+			<form onSubmit={handleLoginClick} onReset={handleRegisterClick}>
+				<input
+					type='text'
+					name='username'
+					placeholder='Username'
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				<input
+					type='password'
+					name='password'
+					placeholder='Password'
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<button type='submit'>Login</button>
+				<button type='reset'>Register</button>
+			</form>
+			{error && <p>{error + '!'}</p>}
 		</div>
 	);
-}
+};
+
+export default Login;

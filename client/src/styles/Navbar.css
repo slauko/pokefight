@@ -5,6 +5,10 @@
 	position: sticky;
 	top: 0;
 	z-index: 1;
+	max-height: 10vh;
+}
+.Navbar > * {
+	max-height: 10vh;
 }
 
 .Logo {
@@ -17,7 +21,8 @@
 }
 
 .Logo > img {
-	height: 50px;
+	height: 10vh;
+	max-height: 10vh;
 }
 
 .Links {
@@ -29,7 +34,7 @@
 .Links > a {
 	color: white;
 	text-decoration: none;
-	font-size: 1.5rem;
+	font-size: min(1.5em, 5vh);
 	font-weight: bold;
 	padding: 10px;
 	text-shadow: 1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black;
@@ -38,4 +43,27 @@
 .Links > a:hover {
 	color: #e7bd40;
 	text-shadow: 1px 1px 4px black, -1px -1px 4px black, 1px -1px 4px black, -1px 1px 4px black;
+}
+
+/* media query mobile */
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+	.Logo,
+	.Links,
+	.Links > a {
+		padding: 0 !important;
+	}
+	.Logo > img {
+		height: 5vh;
+		max-height: 5vh;
+	}
+}
+@media only screen and (orientation: landscape) {
+	.Logo,
+	.Links,
+	.Links > a {
+		padding: 0 !important;
+	}
+	.Logo > img {
+		max-height: 7vh;
+	}
 }
