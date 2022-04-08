@@ -41,7 +41,7 @@
 }
 
 .Links > a:hover {
-	color: #e7bd40;
+	color: var(--button-color-hover);
 	text-shadow: 1px 1px 4px black, -1px -1px 4px black, 1px -1px 4px black, -1px 1px 4px black;
 }
 
