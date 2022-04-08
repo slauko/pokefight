@@ -19,8 +19,10 @@ const Login = ({ setUser }) => {
 			.post(LOGIN_URL, { username, password })
 			.then((res) => {
 				setUser(res.data[0]);
-				setError('');
-				navigate('/profile');
+				setError('Logged in successfully');
+				setTimeout(() => {
+					navigate('/profile');
+				}, 500);
 			})
 			.catch((err) => {
 				setError(err.response.data);
@@ -33,7 +35,11 @@ const Login = ({ setUser }) => {
 		axios
 			.post(REGISTER_URL, { username, password })
 			.then((res) => {
+				setUser(res.data);
 				setError('Registered successfully');
+				setTimeout(() => {
+					navigate('/profile');
+				}, 500);
 			})
 			.catch((err) => {
 				setError(err.response.data);
