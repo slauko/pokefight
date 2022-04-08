@@ -30,6 +30,7 @@ const users = mongoose.model(
 		password: String,
 	})
 );
+
 const pokemons = mongoose.model(
 	'pokemons',
 	mongoose.Schema({
@@ -46,19 +47,17 @@ const pokemons = mongoose.model(
 app.use(cors());
 app.use(express.json());
 
-// GET all users if not production
-if (process.env.NODE_ENV !== 'production') {
-	app.get('/users', (req, res) => {
-		users
-			.find({})
-			.then((users) => {
-				res.send(users);
-			})
-			.catch((err) => {
-				res.status(500).send(err);
-			});
-	});
-}
+// GET all users, without sending password
+app.get('/users', (req, res) => {
+	users
+		.aggregate([{ $group: { _id: '$_id', username: { $first: '$username' } } }])
+		.then((users) => {
+			res.send(users);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
 
 app.get('/users/:id/pokemons', (req, res) => {
 	pokemons
