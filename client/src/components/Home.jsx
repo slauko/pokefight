@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 import loadIcon from '../pictures/PokeBall.png';
 import '../styles/Home.css';
@@ -35,7 +36,7 @@ export default function Home() {
 		<div className='Home'>
 			<div className='Pokedex'>
 				{pokedex.map((pokemon) => {
-					return <Card pokemon={pokemon} />;
+					return <Card pokemon={pokemon} key={uuid()} />;
 				})}
 			</div>
 		</div>
