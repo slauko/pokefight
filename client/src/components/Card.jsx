@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactCardFlip from 'react-card-flip';
+import { v4 as uuid } from 'uuid';
 
 import '../styles/Card.css';
 
@@ -72,7 +73,12 @@ export default function Card({ pokemon }) {
 					{pokemon.type.map((type) => {
 						const color = getTypeColor(type.toLowerCase());
 						return (
-							<div className='col-md' id='Type' style={{ backgroundColor: `${color}` }}>
+							<div
+								className='col-md'
+								id='Type'
+								style={{ backgroundColor: `${color}` }}
+								key={uuid()}
+							>
 								<p>{type}</p>
 							</div>
 						);
