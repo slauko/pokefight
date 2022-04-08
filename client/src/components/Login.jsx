@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import '../styles/Login.css';
 import axios from 'axios';
 
 const LOGIN_URL = process.env.REACT_APP_SERVER_CONNECTION + 'user/login';
@@ -47,26 +47,34 @@ const Login = ({ setUser }) => {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleLoginClick} onReset={handleRegisterClick}>
-				<input
-					type='text'
-					name='username'
-					placeholder='Username'
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
-				<input
-					type='password'
-					name='password'
-					placeholder='Password'
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-				<button type='submit'>Login</button>
-				<button type='reset'>Register</button>
-			</form>
-			{error && <p>{error + '!'}</p>}
+		<div className='Login row'>
+			<div className='Form col-md-2'>
+				<form onSubmit={handleLoginClick} onReset={handleRegisterClick}>
+					<input
+						type='text'
+						name='username'
+						placeholder='Username'
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+					/>
+					<input
+						type='password'
+						name='password'
+						placeholder='Password'
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+					/>
+					<button type='submit'>Login</button>
+					<button type='reset'>Register</button>
+					{error ? (
+						<p>{error + '!'}</p>
+					) : (
+						<p>
+							<br />
+						</p>
+					)}
+				</form>
+			</div>
 		</div>
 	);
 };

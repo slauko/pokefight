@@ -1,0 +1,40 @@
+.Form > form {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	margin: 20px;
+	padding-bottom: 0;
+	margin-bottom: 0;
+	border-radius: 5px;
+	border: solid black 1px;
+}
+
+.Form * > input {
+	height: 50px;
+	margin-bottom: 10px;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 0 10px;
+	width: 100%;
+}
+
+.Form * > button {
+	height: 50px;
+	border: none;
+	border-radius: 5px;
+	background-color: black;
+	color: #fff;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	margin: 2px 0;
+}
+.Form * > button:hover {
+	color: #e7bd40;
+}
+
+.Form * > p {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}
