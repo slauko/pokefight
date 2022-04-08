@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
-const LOGIN_URL = 'http://localhost:3001/user/login'; //'http://173.212.218.93:49171/user/login';
-const REGISTER_URL = 'http://localhost:3001/user/register';
+const LOGIN_URL = process.env.REACT_APP_SERVER_CONNECTION + 'user/login';
+const REGISTER_URL = process.env.REACT_APP_SERVER_CONNECTION + 'user/register';
 const Login = ({ setUser }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');

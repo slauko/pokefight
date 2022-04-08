@@ -4,7 +4,7 @@ import loadIcon from '../pictures/PokeBall.png';
 import '../styles/Home.css';
 import Card from './Card';
 
-const POKEDEX_URL = 'http://173.212.218.93:49171/pokedex';
+const POKEDEX_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokedex';
 export default function Home() {
 	const [pokedex, setPokedex] = useState([]);
 	const [loading, setLoading] = useState(false);
