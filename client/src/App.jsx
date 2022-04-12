@@ -45,7 +45,7 @@ function App() {
 			<Navbar user={user} />
 			<div className='Content row'>
 				<Routes>
-					<Route path='/' element={<Home />} />
+					<Route path='/' element={<Home localUser={user} />} />
 					<Route path='/user' element={<UserList />} />
 					<Route
 						path='/login'

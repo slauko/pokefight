@@ -6,7 +6,7 @@ import '../styles/Home.css';
 import Card from './Card';
 
 const POKEDEX_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokedex';
-export default function Home() {
+export default function Home({ localUser }) {
 	const [pokedex, setPokedex] = useState([]);
 	const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ export default function Home() {
 		<div className='Home'>
 			<div className='Pokedex'>
 				{pokedex.map((pokemon) => {
-					return <Card pokemon={pokemon} key={uuid()} />;
+					return <Card pokemon={pokemon} key={uuid()} localUser={localUser} />;
 				})}
 			</div>
 		</div>

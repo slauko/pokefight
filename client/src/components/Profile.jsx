@@ -73,7 +73,7 @@ export default function Profile({ localUser, setUser, deleteCookie }) {
 							)}
 						</div>
 
-						<h1>Pokemons</h1>
+						<h1>Pokemon</h1>
 						<div className='ProfilePokemons'>
 							{pokemons.map((pokemon) => {
 								return (
