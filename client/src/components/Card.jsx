@@ -70,8 +70,9 @@ export default function Card({ pokemon, localUser }) {
 	};
 
 	const handleAddPokemon = () => {
-		console.log(name);
-		//addPokemon(name);
+		if (name.length > 0) {
+			addPokemon(name);
+		}
 		setOpenModal(false);
 	};
 
@@ -208,6 +209,7 @@ export default function Card({ pokemon, localUser }) {
 								}}
 							/>
 							<button onClick={handleAddPokemon}>Add</button>
+							{name.length === 0 && <label>Name cant be empty!</label>}
 						</div>
 						<div className='modalRight'>
 							<button id='closeModalButton' onClick={() => setOpenModal(false)}>

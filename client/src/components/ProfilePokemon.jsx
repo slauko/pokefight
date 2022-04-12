@@ -6,7 +6,7 @@ import '../styles/Profile.css';
 
 const STATS_URL = 'http://localhost:3001/pokemon/'; //process.env.REACT_APP_SERVER_CONNECTION + 'pokemon/';
 
-export default function ProfilePokemon({ pokemon, attackerID, canAttack }) {
+export default function ProfilePokemon({ pokemon, attackerID, canAttack, heal }) {
 	const [pokeWithStats, setStats] = useState([]);
 	const navigate = useNavigate();
 
@@ -22,6 +22,10 @@ export default function ProfilePokemon({ pokemon, attackerID, canAttack }) {
 	}, []);
 	const handleAttackClick = () => {
 		navigate('/fight/' + attackerID + '/' + pokemon._id);
+	};
+	const handleHealClick = () => {
+		axios.put(STATS_URL + pokemon._id + '/heal');
+		navigate(0);
 	};
 	return (
 		<div className='ProfilePokemonCard'>
@@ -96,6 +100,7 @@ export default function ProfilePokemon({ pokemon, attackerID, canAttack }) {
 			)}
 			<div className='ProfilePokemonCard-Buttons'>
 				{attackerID && canAttack ? <button onClick={handleAttackClick}>Attack!</button> : null}
+				{heal ? <button onClick={handleHealClick}>Heal</button> : null}
 			</div>
 		</div>
 	);

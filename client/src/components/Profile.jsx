@@ -82,6 +82,7 @@ export default function Profile({ localUser, setUser, deleteCookie }) {
 										attackerID={selected}
 										key={pokemon._id}
 										canAttack={currentUserID !== profile._id}
+										heal={currentUserID === profile._id}
 									/>
 								);
 							})}
