@@ -11,6 +11,7 @@ export default function Home() {
 	const [loading, setLoading] = useState(false);
 
 	// load pokedex
+	const isPokedexEmpty = !pokedex;
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -22,7 +23,7 @@ export default function Home() {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [!pokedex]);
+	}, [isPokedexEmpty]);
 
 	if (loading) {
 		return (
