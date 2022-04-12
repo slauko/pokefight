@@ -4,8 +4,8 @@ import ProfilePokemon from './ProfilePokemon';
 import axios from 'axios';
 import '../styles/Fight.css';
 
-const FIGHT_ULT = 'http://localhost:3001/fight/'; //process.env.REACT_APP_SERVER_CONNECTION + 'fight/';
-const POKEMON_URL = 'http://localhost:3001/pokemons/'; //process.env.REACT_APP_SERVER_CONNECTION + 'pokemons/';
+const FIGHT_ULT = process.env.REACT_APP_SERVER_CONNECTION + 'fight/';
+const POKEMON_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokemons/';
 export default function Fight() {
 	const { poke1_id, poke2_id } = useParams();
 	const [pokemon1, setPokemon1] = useState(null);

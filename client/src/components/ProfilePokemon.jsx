@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../styles/Profile.css';
 
-const STATS_URL = 'http://localhost:3001/pokemon/'; //process.env.REACT_APP_SERVER_CONNECTION + 'pokemon/';
+const STATS_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokemon/';
 
 export default function ProfilePokemon({ pokemon, attackerID, canAttack, heal }) {
 	const [pokeWithStats, setStats] = useState([]);
