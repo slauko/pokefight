@@ -5,7 +5,7 @@ import ProfilePokemon from './ProfilePokemon';
 import ProfilePokemonChooser from './ProfilePokemonChooser';
 import '../styles/Profile.css';
 
-const USER_URL = 'http://localhost:3001/users/'; //process.env.REACT_APP_SERVER_CONNECTION + 'users/';
+const USER_URL = process.env.REACT_APP_SERVER_CONNECTION + 'users/';
 export default function Profile({ localUser, setUser, deleteCookie }) {
 	const [profile, setProfile] = useState(null);
 	const [loading, setLoading] = useState(true);

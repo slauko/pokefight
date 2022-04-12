@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import '../styles/Profile.css';
 
-const STATS_URL = 'http://localhost:3001/pokemon/'; //process.env.REACT_APP_SERVER_CONNECTION + 'pokemon/';
+const STATS_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokemon/';
 
 export default function ProfilePokemonChooser({ pokemon, setSelected, selected }) {
 	const [pokeWithStats, setStats] = useState([]);
