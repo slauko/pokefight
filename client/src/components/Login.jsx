@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const LOGIN_URL = process.env.REACT_APP_SERVER_CONNECTION + 'user/login';
 const REGISTER_URL = process.env.REACT_APP_SERVER_CONNECTION + 'user/register';
-const Login = ({ setUser }) => {
+const Login = ({ setUser, setUserCookie }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
@@ -19,9 +19,10 @@ const Login = ({ setUser }) => {
 			.post(LOGIN_URL, { username, password })
 			.then((res) => {
 				setUser(res.data[0]);
+				setUserCookie(res.data[0]);
 				setError('Logged in successfully');
 				setTimeout(() => {
-					navigate('/profile');
+					navigate('/profile/' + res.data[0]._id);
 				}, 500);
 			})
 			.catch((err) => {
@@ -36,9 +37,10 @@ const Login = ({ setUser }) => {
 			.post(REGISTER_URL, { username, password })
 			.then((res) => {
 				setUser(res.data);
+				setUserCookie(res.data);
 				setError('Registered successfully');
 				setTimeout(() => {
-					navigate('/profile');
+					navigate('/profile/' + res.data._id);
 				}, 500);
 			})
 			.catch((err) => {
@@ -48,7 +50,7 @@ const Login = ({ setUser }) => {
 
 	return (
 		<div className='Login row'>
-			<div className='Form col-md-2'>
+			<div className='Form col-xs-4 col-md-5 col-xl-4'>
 				<form onSubmit={handleLoginClick} onReset={handleRegisterClick}>
 					<input
 						type='text'

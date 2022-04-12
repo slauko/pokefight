@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import { v4 as uuid } from 'uuid';
-
+import axios from 'axios';
 import '../styles/Card.css';
+import Modal from 'react-modal';
 
 const getTypeColor = (type) => {
 	switch (type) {
@@ -47,11 +48,35 @@ const getTypeColor = (type) => {
 	}
 };
 
-export default function Card({ pokemon }) {
+const ADD_URL = 'http://localhost:3001/pokemon'; //process.env.REACT_APP_SERVER_CONNECTION + 'pokemon';
+export default function Card({ pokemon, localUser }) {
 	const [isFlipped, setIsFlipped] = useState(false);
+	const [name, setName] = useState(pokemon.name.english);
+	const [openModal, setOpenModal] = useState(false);
 
-	const handleAddPokemon = () => {};
+	const addPokemon = (name) => {
+		axios
+			.post(ADD_URL, {
+				userId: localUser._id,
+				pokeId: pokemon.id,
+				pokeName: name,
+			})
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
+	const handleAddPokemon = () => {
+		if (name.length > 0) {
+			addPokemon(name);
+		}
+		setOpenModal(false);
+	};
+
+	Modal.setAppElement('#root');
 	return (
 		<ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
 			<div
@@ -164,7 +189,34 @@ export default function Card({ pokemon }) {
 					</div>
 				</div>
 				<div className='row' id='Add'>
-					<button onClick={handleAddPokemon}>Add to your Pokemons</button>
+					{localUser ? (
+						<button
+							onClick={() => {
+								setOpenModal(true);
+							}}
+						>
+							Add to your Pokemon
+						</button>
+					) : null}
+					<Modal isOpen={openModal}>
+						<div className='modalLeft'>
+							<h5>Name your Pokemon:</h5>
+							<input
+								type='text'
+								value={name}
+								onChange={(e) => {
+									setName(e.target.value);
+								}}
+							/>
+							<button onClick={handleAddPokemon}>Add</button>
+							{name.length === 0 && <label>Name cant be empty!</label>}
+						</div>
+						<div className='modalRight'>
+							<button id='closeModalButton' onClick={() => setOpenModal(false)}>
+								X
+							</button>
+						</div>
+					</Modal>
 				</div>
 			</div>
 		</ReactCardFlip>

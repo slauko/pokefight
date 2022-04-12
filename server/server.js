@@ -58,6 +58,32 @@ app.get('/users', (req, res) => {
 			res.status(500).send(err);
 		});
 });
+// GET user by id
+app.get('/users/:id', (req, res) => {
+	users
+		.aggregate([
+			{ $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
+			{ $group: { _id: '$_id', username: { $first: '$username' } } },
+		])
+		.then((user) => {
+			res.send(user[0]);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
+
+// GET pokemon by id
+app.get('/pokemons/:id', (req, res) => {
+	pokemons
+		.find({ _id: req.params.id })
+		.then((pokemon) => {
+			res.send(pokemon[0]);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
 
 app.get('/users/:id/pokemons', (req, res) => {
 	pokemons
@@ -147,11 +173,29 @@ const calcDamage = (pokemon1, pokemon2) => {
 
 	const normalDamage = rawNormalDamage * effectiveness * normalDamageReductionMod;
 	const specialDamage = rawSpecialAttack * effectiveness * specialAttackReductionMod;
-	return (normalDamage + specialDamage) * speedMod;
+	return ((normalDamage + specialDamage) * speedMod) / 3;
 };
 
 const getCritChance = () => {
 	return Math.random() * 0.5 + 0.5;
+};
+
+const updatePokemonLevelInDB = (pokemon, newLevel) => {
+	pokemons
+		.updateOne(
+			{ _id: pokemon._id },
+			{
+				$set: {
+					level: newLevel,
+				},
+			}
+		)
+		.then((data) => {
+			//console.log('updated pokemon level');
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 
 // FIGHT between two pokemons
@@ -190,12 +234,22 @@ app.get('/fight/:id1/:id2', (req, res) => {
 												.updateOne({ _id: req.params.id1 }, { $set: { hp: poke1HPAfterAttack } })
 												.then(() => {
 													if (poke1HPAfterAttack == 0) {
+														//update pokemonlevels when fight end
+														updatePokemonLevelInDB(
+															pokemon2[0],
+															Math.max(100, pokemon2[0].level + 2)
+														);
+														updatePokemonLevelInDB(
+															pokemon1[0],
+															Math.max(100, pokemon1[0].level + 1)
+														);
+
 														res.send({
 															damage1: damage1,
 															damage2: damage2,
 															crit1: critChance1,
 															crit2: critChance2,
-															winner: 'Pokemon 2',
+															winner: pokemon2[0].poke_name,
 														});
 													} else {
 														res.send({
@@ -207,12 +261,16 @@ app.get('/fight/:id1/:id2', (req, res) => {
 													}
 												});
 										} else {
+											//update pokemonlevels when fight end
+											updatePokemonLevelInDB(pokemon1[0], pokemon1[0].level + 2);
+											updatePokemonLevelInDB(pokemon2[0], pokemon2[0].level + 1);
+
 											res.send({
 												damage1: damage1,
 												damage2: 0,
 												crit1: critChance1,
 												crit2: critChance2,
-												winner: 'Pokemon 1',
+												winner: pokemon1[0].poke_name,
 											});
 										}
 									});
@@ -245,17 +303,61 @@ app.post('/pokemon', (req, res) => {
 		const newPokemon = {
 			user_id: userId,
 			...basePokemon,
-			name: pokeName,
+			poke_name: pokeName,
 		};
 		pokemons
-			.insertOne(newPokemon)
-			.then((result) => {
-				res.send(result.ops[0]);
+			.create({ _id: new mongoose.Types.ObjectId(), ...newPokemon })
+			.then((pokemon) => {
+				res.send(pokemon);
 			})
 			.catch((err) => {
 				res.status(500).send(err);
 			});
 	});
+});
+
+// GET pokemon stats by id
+app.get('/pokemon/:id/stats', (req, res) => {
+	pokemons
+		.find({ _id: req.params.id })
+		.then((pokemon) => {
+			if (pokemon.length == 0) {
+				res.status(404).send('Pokemon not found');
+			} else {
+				getPokemonWithStats(pokemon[0]).then((pokeWithStats) => {
+					res.send(pokeWithStats);
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
+
+// heal a pokemon to maxHP
+app.put('/pokemon/:id/heal', (req, res) => {
+	pokemons
+		.find({ _id: req.params.id })
+		.then((pokemon) => {
+			if (pokemon.length == 0) {
+				res.status(404).send('Pokemon not found');
+			} else {
+				pokedex.find({ id: pokemon[0].poke_id }).then((poke) => {
+					const maxHP = poke[0].base.HP * pokemon[0].level;
+					pokemons
+						.updateOne({ _id: req.params.id }, { $set: { hp: maxHP } })
+						.then((result) => {
+							res.send(result);
+						})
+						.catch((err) => {
+							res.status(500).send(err);
+						});
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
 });
 
 // CREATE new user

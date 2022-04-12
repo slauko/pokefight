@@ -12,7 +12,11 @@ function Navbar({ user }) {
 			<div className='Links col-md col-sm-8 col-xs'>
 				<Link to='/'>Pokedex</Link>
 				<Link to='/user'> User </Link>
-				{user ? <Link to='/profile'> Profile </Link> : <Link to='/login'> Login </Link>}
+				{user ? (
+					<Link to={`/profile/${user._id}`}> Profile </Link>
+				) : (
+					<Link to='/login'> Login </Link>
+				)}
 			</div>
 		</div>
 	);
