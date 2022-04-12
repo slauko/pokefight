@@ -237,11 +237,11 @@ app.get('/fight/:id1/:id2', (req, res) => {
 														//update pokemonlevels when fight end
 														updatePokemonLevelInDB(
 															pokemon2[0],
-															Math.max(100, pokemon2[0].level + 2)
+															Math.min(100, pokemon2[0].level + 2)
 														);
 														updatePokemonLevelInDB(
 															pokemon1[0],
-															Math.max(100, pokemon1[0].level + 1)
+															Math.min(100, pokemon1[0].level + 1)
 														);
 
 														res.send({
@@ -262,8 +262,8 @@ app.get('/fight/:id1/:id2', (req, res) => {
 												});
 										} else {
 											//update pokemonlevels when fight end
-											updatePokemonLevelInDB(pokemon1[0], pokemon1[0].level + 2);
-											updatePokemonLevelInDB(pokemon2[0], pokemon2[0].level + 1);
+											updatePokemonLevelInDB(pokemon1[0], Math.min(100, pokemon1[0].level + 2));
+											updatePokemonLevelInDB(pokemon2[0], Math.min(100, pokemon2[0].level + 1));
 
 											res.send({
 												damage1: damage1,

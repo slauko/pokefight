@@ -48,7 +48,7 @@ const getTypeColor = (type) => {
 	}
 };
 
-const ADD_URL = rocess.env.REACT_APP_SERVER_CONNECTION + 'pokemon';
+const ADD_URL = process.env.REACT_APP_SERVER_CONNECTION + 'pokemon';
 export default function Card({ pokemon, localUser }) {
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [name, setName] = useState(pokemon.name.english);
